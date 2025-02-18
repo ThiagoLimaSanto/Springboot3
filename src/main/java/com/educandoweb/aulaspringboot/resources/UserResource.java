@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.educandoweb.aulaspringboot.entities.User;
 import com.educandoweb.aulaspringboot.services.UserService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
