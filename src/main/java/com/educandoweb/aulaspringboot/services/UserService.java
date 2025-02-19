@@ -13,6 +13,8 @@ import com.educandoweb.aulaspringboot.repositories.UserRepository;
 import com.educandoweb.aulaspringboot.services.exceptions.DataBaseException;
 import com.educandoweb.aulaspringboot.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserService {
 
@@ -37,15 +39,19 @@ public class UserService {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(id);
-        } catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DataBaseException(e.getMessage());
         }
     }
 
     public User update(Long id, User obj) {
-        User entity = repository.getReferenceById(id);
-        updateDate(entity, obj);
-        return repository.save(entity);
+        try {
+            User entity = repository.getReferenceById(id);
+            updateDate(entity, obj);
+            return repository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateDate(User entity, User obj) {
